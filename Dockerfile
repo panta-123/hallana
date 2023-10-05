@@ -31,10 +31,8 @@ RUN ls -l
 RUN pwd
 RUN echo $GITHUB_WORKSPACE
 RUN ls -l $GITHUB_WORKSPACE
-RUN echo ${{ github.workspace }}
-RUN ls -l ${{ github.workspace }}
 RUN ls -l /
-RUN ls -l /hallana
+RUN ls -l /h*
 RUN mkdir $GITHUB_WORKSPACE/build
 RUN cmake -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/build ..
 RUN make  install -j
