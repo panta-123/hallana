@@ -6,7 +6,7 @@ on:
 
 jobs:
   docker:
-    runs-on: centos:centos7
+    runs-on: ubuntu-latest
     steps:
       -
         name: Checkout

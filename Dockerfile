@@ -12,7 +12,7 @@ RUN yum -y install epel-release && \
     yum -y install scons && \
     yum -y install git && \
     yum -y install gcc-c++ && \
-    yum install -y  root\
+    yum install -y root \
     #$(cat packages) \
     && localedef -i en_US -f UTF-8 en_US.UTF-8
     #&& rm -f /packages 
