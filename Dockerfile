@@ -33,7 +33,7 @@ RUN echo $GITHUB_WORKSPACE
 RUN ls -l $GITHUB_WORKSPACE
 RUN ls -l /
 RUN ls -l /home
-RUN ls -l /home/*
+RUN ls -l /home/*/*
 RUN mkdir $GITHUB_WORKSPACE/build
 RUN cmake -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/build ..
 RUN make  install -j
