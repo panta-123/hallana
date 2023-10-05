@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>Release Notes Podd v1.7</title>
+</head>
+
+<body background="wallpaper.gif">
+<h2>Podd version 1.7.0</h2>
+
+16 November 2021
+<p>
+  The Hall A software team is pleased to present version 1.7 of the Hall A
+  data analysis software Podd. This release includes three years of development,
+  updates, performance improvements and bugfixes.
+
+<p>
+  The main improvements in this release are in the decoder, which now supports
+  the CODA 3 raw data format, bank data and event block decoding. The EVIO
+  library, used for reading CODA data, has been upgraded to version 5.3, which
+  offers much better performance. Support has been added to the main detector
+  classes for decoding FADC frontend modules. Additionally, there is a new module
+  type, InterStageModule, which can be used to combine information from arbitrary
+  detectors after each processing stage, for example to correct for trigger
+  jitter in coincidence data and many other possible uses.
+
+<p>
+  The code base has been thoroughly modernized and reorganized. A C++11 compiler
+  and ROOT&nbsp;6 are now required. CMake support has been added.
+
+<p>
+  Several parts of the programming interface have changed in this release
+  compared to version 1.6. As a result, libraries and plug-ins will have to be
+  recompiled. In some cases, minor source code changes may be necessary.
+
+<hr>
+
+<h3>What's new</h3>
+Compared to
+<a href="https://redmine.jlab.org/projects/podd/wiki/Release_Notes_v16">Release 1.6</a>,
+the following features have been added:
+
+<ul>
+  <li>Support for input files with CODA version 3 format has been added. The data
+    format is normally automatically detected, but can be manually set if necessary.
+  <li>The raw event buffer size is now dynamically adjusted based on the event
+    size encountered in the input data (up to a sanity limit of 1&nbsp;GiB/event).
+  <li>The automatically downloaded version of
+    <a href="https://coda.jlab.org/drupal/content/event-io-evio">EVIO</a>
+    has been upgraded to Release 5.3. This version includes many bug fixes
+    and important performance improvements over the previous version 4.4.6.
+    If you build the analyzer against a standalone version of EVIO below 5.3,
+    it is strongly recommended upgrading it to 5.3.
+  <li>The decoder was refactored to use unsigned 32-bit integers instead of signed integers
+    for most data, which is the appropriate type for this information and consistent
+    with the CODA raw data format. This change in particular may require some refactoring
+    of user code.
+  <li>Arbitrary configuration strings can be passed to instances of decoder modules
+    via the crate map.
+  <li>Support for the JLab 12 GeV pipelined electronics modules, in particular the
+     FADC250, has been greatly improved. Decoders FADC-based readouts have been added
+     to all standard detector classes. It is recommended to study the
+    <a href="https://redmine.jlab.org/projects/podd/wiki/FADCDecoders">FADC decoder
+      documentation</a> to take full advantage of this feature.
+  <li>A new analysis object type,
+    <a href="https://redmine.jlab.org/projects/podd/wiki/InterStageModule"><code>InterStageModule</code></a>,
+    can be used to combine information from arbitrary modules (detector, spectrometers)
+    after each processing stage. An example application of this module type,
+    <code>HallA::TwoarmVDCTimeCorrection</code>, is included. It allows correction
+    of time jitter in VDC TDCs in one spectrometer in case of a coincidence trigger
+    whose timing is defined by the opposite coincidence arms.
+  <li>Support for <a href="https://cmake.org"><code>CMake</code></a>
+    (version 3.5 or higher) has been added to the build system.
+    This is the preferred method for
+  <a href="https://redmine.jlab.org/projects/podd/wiki/Installation">building the analyzer</a>.
+    The previous <code>SCons</code> system is still available but deprecated and will be
+    removed in a future release. The plain <code>Makefile</code> build system has been
+    removed.
+  <li>The <code>CMake</code> system automatically sets <code>RPATH</code> in the resulting
+    binaries on all supported platforms, which should greatly reduce errors due to
+    an incorrectly set <code>LD_LIBRARY_PATH</code>.
+  <li>Support for shell
+    <a href="https://redmine.jlab.org/projects/podd/wiki/EnvModules">environment modules</a>
+    has been added. Additionally, traditional environment setup scripts for
+    <code>sh/bash</code> and <code>csh/tcsh</code> are installed along with the analyzer
+    binaries.
+  <li>System requirements now include ROOT&nbsp;6 and a C++11 compiler.
+  <li>Supported macOS versions include 10.12 (Sierra) through 11 (Big Sur)
+    with the matching command line tools for Xcode, which provide Apple Clang&nbsp;9.0
+    through 13.0. A full installation of Xcode is not required.
+  <li>The code base has been thoroughly modernized to C++11 (or C++14/C++17, if available).
+    Many suggestions from static code analyzers
+    (<code>cppcheck</code>, <code>clang-tidy</code>, Coverity Scan)
+    have been incorporated for better code safety and portability.
+  <li>Support functions for the text-based database system have been refactored into
+    a separate standalone library <code>libPoddDB</code> which can be linked with
+    arbitrary user projects independent of Podd.
+</ul>
+
+<h3>Compatibility</h3>
+Version 1.7 is neither completely source-compatible nor binary-compatible with version 1.6 and
+prior releases. Plug-ins and user libraries will need to be recompiled and possibly
+changed. Any required changes will probably be relatively minor, however.
+Please contact the developers if you need to do this and run into problems.
+
+<h3>Minimum system requirements & dependencies</h3>
+<ul>
+  <li>Linux with gcc/g++&nbsp;4.8 or higher; or macOS&nbsp;10.12 or higher with Apple's
+    command line tools for Xcode (providing clang/clang++&nbsp;9.0 or higher). The compiler
+    must support C++11.
+  <li>ROOT&nbsp;6. Latest version recommended.
+  <li>CMake&nbsp;3.5. Version 3.15 or newer recommended.
+  <li>Reasonably powerful hardware (2&nbsp;GHz multicore CPU, 2&nbsp;GB RAM).
+    Runtime resource requirements are highly dependent on the analysis configuration
+    and the complexity of the input data.
+</ul>
+The following platforms have been explicitly tested:
+<ul>
+  <li>RedHat Enterprise Linux&nbsp;7 and 8
+  <li>Fedora&nbsp;32 and 34
+  <li>Ubuntu&nbsp;20.04&nbsp;LTS
+  <li>macOS&nbsp;10.12, 10.15 and 11.3
+</ul>
+Other Unix-like platforms that support ROOT and CMake should work as well,
+likely out of the box.
+
+<h3>Building and installing the software</h3>
+Please see the
+<a href="https://redmine.jlab.org/projects/podd/wiki/Installation">Installation Guide</a>
+
+<h3>Running the program / How to analyze data</h3>
+Please see the <a href="https://redmine.jlab.org/projects/podd/wiki/quickstart">Quickstart Guide</a>
+and the <a href="https://redmine.jlab.org/projects/podd/wiki/Documentation">main documentation page</a>.
+
+<h3>Example Scripts</h3>
+Example scripts can be found in the "examples" subdirectory.
+
+<h3>Documentation</h3>
+Further documentation is available in the "docs" subdirectory and
+at the <a href="https://redmine.jlab.org/projects/podd/wiki/">project wiki page</a>.
+
+<h3>Credits</h3>
+Special thanks to Robert Michaels, Steve Wood, Mark Jones and everyone else
+who has made valuable contributions to this version.
+
+<p>
+<hr>
+Contact: <address><a href="mailto:ole@jlab.org">Ole Hansen &lt;ole@jlab.org&gt;</a>
+</address>
+</body>
+</html>
