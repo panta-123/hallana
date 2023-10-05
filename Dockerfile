@@ -2,7 +2,7 @@ FROM centos:centos7
 
 #COPY packages_root packages
 
-
+SHELL ["/bin/bash", "-c"]
 RUN yum update -q -y
 RUN yum group list
 ARG DOCKER_TAG
@@ -22,12 +22,14 @@ RUN tar -xvf cmake-3.22.2-linux-x86_64.tar.gz
 RUN ls -l
 RUN mv cmake-3.22.2-linux-x86_64 /usr/local/cmake
 RUN ls -l /usr/local/cmake/bin
-RUN export PATH="/usr/local/cmake/bin:$PATH"
+ENV PATH="/usr/local/cmake/bin:$PATH"
+RUN echo $PATH
+RUN /usr/local/cmake/bin/cmake --version
 RUN cmake --version
 RUN which root-config
 RUN mkdir build
 WORKDIR "$GITHUB_WORKSPACE/build"
-RUN cmake3 -DCMAKE_INSTALL_PREFIX=~/local/analyzer ..
+RUN cmake -DCMAKE_INSTALL_PREFIX=~/local/analyzer ..
 RUN make  install -j
 ENV PATH="~/local/analyzer/bin:$PATH"
 ENV LD_LIBRARY_PATH="~/local/analyzer/lib:$LD_LIBRARY_PATH"
