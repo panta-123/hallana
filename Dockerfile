@@ -23,7 +23,7 @@ RUN ls -l
 RUN mv cmake-3.22.2-linux-x86_64 /usr/local/cmake
 RUN ls -l /usr/local/cmake/bin
 RUN export PATH="/usr/local/cmake/bin:$PATH"
-RUN cmake3 --version
+RUN cmake --version
 RUN which root-config
 RUN mkdir build
 WORKDIR "$GITHUB_WORKSPACE/build"
