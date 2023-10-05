@@ -1,6 +1,6 @@
 FROM centos:centos7
 
-COPY packages_root packages
+#COPY packages_root packages
 
 
 RUN yum update -q -y
@@ -12,9 +12,10 @@ RUN yum -y install epel-release && \
     yum -y install scons && \
     yum -y install git && \
     yum -y install gcc-c++ && \
-    yum install -y $(cat packages) \
-    && localedef -i en_US -f UTF-8 en_US.UTF-8 \
-    && rm -f /packages 
+    yum install -y  root\
+    #$(cat packages) \
+    && localedef -i en_US -f UTF-8 en_US.UTF-8
+    #&& rm -f /packages 
 
 ADD https://github.com/Kitware/CMake/releases/download/v3.22.2/cmake-3.22.2-linux-x86_64.tar.gz .
 RUN tar -xvf cmake-3.22.2-linux-x86_64.tar.gz
