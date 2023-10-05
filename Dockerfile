@@ -26,9 +26,11 @@ ENV PATH="/usr/local/cmake/bin:$PATH"
 RUN echo $PATH
 RUN /usr/local/cmake/bin/cmake --version
 RUN cmake --version
-RUN which root-config
+RUN pwd
+RUN ls -l
 RUN mkdir build
-WORKDIR "$GITHUB_WORKSPACE/build"
+RUN pwd
+RUN ls -l ~/local/
 RUN cmake -DCMAKE_INSTALL_PREFIX=~/local/analyzer ..
 RUN make  install -j
 ENV PATH="~/local/analyzer/bin:$PATH"
