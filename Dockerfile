@@ -30,7 +30,8 @@ RUN pwd
 RUN ls -l
 RUN mkdir build
 RUN pwd
-RUN ls -l ~/local/
+RUN echo $GITHUB_WORKSPACE
+RUN ls -l $GITHUB_WORKSPACE
 RUN cmake -DCMAKE_INSTALL_PREFIX=~/local/analyzer ..
 RUN make  install -j
 ENV PATH="~/local/analyzer/bin:$PATH"
