@@ -27,17 +27,11 @@ RUN echo $PATH
 RUN /usr/local/cmake/bin/cmake --version
 RUN cmake --version
 RUN pwd
-RUN ls -l
-RUN pwd
-RUN echo $GITHUB_WORKSPACE
-RUN ls -l $GITHUB_WORKSPACE
-RUN ls -l /
-RUN ls -l /home
-RUN ls -l /home/*/*
-RUN mkdir $GITHUB_WORKSPACE/build
-RUN cmake -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/build ..
+RUN mkdir build
+RUN cd build
+RUN cmake -DCMAKE_INSTALL_PREFIX= ..
 RUN make  install -j
-ENV PATH="$GITHUB_WORKSPACE/build/bin:$PATH"
+ENV PATH="build/bin:$PATH"
 ENV LD_LIBRARY_PATH="$GITHUB_WORKSPACE/build/lib:$LD_LIBRARY_PATH"
 
 #RUN mkdir -p ~/JLab/Software/Podd/1.7.0
