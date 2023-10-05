@@ -26,7 +26,7 @@ RUN cmake3 --version
 RUN which root-config
 RUN mkdir build
 WORKDIR "$GITHUB_WORKSPACE/build"
-RUN cmake3 -DCMAKE_INSTALL_PREFIX=$HOME/local/analyzer ..
+RUN cmake3 -DCMAKE_INSTALL_PREFIX=~/local/analyzer ..
 RUN make  install -j
 ENV PATH="~/local/analyzer/bin:$PATH"
 ENV LD_LIBRARY_PATH="~/local/analyzer/lib:$LD_LIBRARY_PATH"
