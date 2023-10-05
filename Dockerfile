@@ -28,14 +28,15 @@ RUN /usr/local/cmake/bin/cmake --version
 RUN cmake --version
 RUN pwd
 RUN ls -l
-RUN mkdir build
 RUN pwd
 RUN echo $GITHUB_WORKSPACE
 RUN ls -l $GITHUB_WORKSPACE
-RUN cmake -DCMAKE_INSTALL_PREFIX=~/local/analyzer ..
+RUN ls -l ~/Home
+RUN mkdir ~/Home/build
+RUN cmake -DCMAKE_INSTALL_PREFIX=~/Home/build ..
 RUN make  install -j
-ENV PATH="~/local/analyzer/bin:$PATH"
-ENV LD_LIBRARY_PATH="~/local/analyzer/lib:$LD_LIBRARY_PATH"
+ENV PATH="~/Home/build/bin:$PATH"
+ENV LD_LIBRARY_PATH="~/Home/build/lib:$LD_LIBRARY_PATH"
 
 #RUN mkdir -p ~/JLab/Software/Podd/1.7.0
 #RUN cmake3 -B build -S . -DCMAKE_INSTALL_PREFIX=~/JLab/Software/Podd/1.7.0
