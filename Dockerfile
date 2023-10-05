@@ -6,9 +6,7 @@ COPY packages_root packages
 RUN yum update -q -y
 RUN yum group list
 ARG DOCKER_TAG
-#ENV APP="${DOCKER_TAG//.}"
-ENV APP_VERSION=$APP
-RUN echo $APP_VERSION
+ENV APP_VERSION=$DOCKER_TAG
 
 RUN yum -y install epel-release && \
     yum -y install scons && \
@@ -26,11 +24,8 @@ RUN ls -l /usr/local/cmake/bin
 RUN export PATH="/usr/local/cmake/bin:$PATH"
 RUN cmake3 --version
 RUN which root-config
-ADD https://github.com/JeffersonLab/analyzer/archive/refs/tags/Release-${APP_VERSION}.tar.gz .
-RUN tar -xvf Release-${APP_VERSION}.tar.gz
-WORKDIR "/analyzer-Release-${APP_VERSION}"
 RUN mkdir build
-WORKDIR "/analyzer-Release-${APP_VERSION}/build"
+WORKDIR "$GITHUB_WORKSPACE/build"
 RUN cmake3 -DCMAKE_INSTALL_PREFIX=$HOME/local/analyzer ..
 RUN make  install -j
 ENV PATH="~/local/analyzer/bin:$PATH"

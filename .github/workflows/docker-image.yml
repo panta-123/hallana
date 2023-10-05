@@ -2,8 +2,6 @@ name: Docker Image CI
 
 on:
   push:
-    branches: 
-       - docker_build_test_branch
     tags: [1*]
 
 jobs:
