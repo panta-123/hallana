@@ -1,0 +1,16 @@
+name: build
+on:
+  push:
+    tags: [1*]
+jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Create build directory and run CMake"
+        run: cmake -S . -B build -DCMAKE_INSTALL_PREFIX=
+      - name: "Build Project" 
+        run: make  install -j 
+      - name: "my"
+        run : ls -l /*/*
+      
