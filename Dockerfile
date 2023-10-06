@@ -1,46 +1,34 @@
 FROM centos:centos7
+#FROM --platform=linux/amd64  centos:centos7
 
 #COPY packages_root packages
 
-SHELL ["/bin/bash", "-c"]
-RUN yum update -q -y
-RUN yum group list
+#SHELL ["/bin/bash", "-c"]
+#RUN yum update -q -y
+#RUN yum group list
 ARG DOCKER_TAG
-ENV APP_VERSION=$DOCKER_TAG
+ENV APP_VERSION=DOCKER_TAG
 
 RUN yum -y install epel-release && \
-    yum -y install scons && \
     yum -y install git && \
+    yum -y groupinstall 'Development Tools'&& \
     yum -y install gcc-c++ && \
+    yum -y install make \
     yum install -y root \
-    #$(cat packages) \
     && localedef -i en_US -f UTF-8 en_US.UTF-8
-    #&& rm -f /packages 
 
 ADD https://github.com/Kitware/CMake/releases/download/v3.22.2/cmake-3.22.2-linux-x86_64.tar.gz .
 RUN tar -xvf cmake-3.22.2-linux-x86_64.tar.gz
-RUN ls -l
 RUN mv cmake-3.22.2-linux-x86_64 /usr/local/cmake
 RUN ls -l /usr/local/cmake/bin
 ENV PATH="/usr/local/cmake/bin:$PATH"
-RUN echo $PATH
-RUN /usr/local/cmake/bin/cmake --version
-RUN cmake --version
-RUN pwd
-RUN mkdir build
-RUN cd build
-RUN cmake -DCMAKE_INSTALL_PREFIX= ..
-RUN make  install -j
-ENV PATH="build/bin:$PATH"
-ENV LD_LIBRARY_PATH="$GITHUB_WORKSPACE/build/lib:$LD_LIBRARY_PATH"
+ADD https://github.com/panta-123/hallana/archive/refs/tags/${APP_VERSION}.tar.gz .
+RUN tar -xvf ${APP_VERSION}.tar.gz
+WORKDIR "/hallana-${APP_VERSION}"
+RUN mkdir -p $HOME/local/analyzer
+RUN cmake -DCMAKE_INSTALL_PREFIX=$HOME/local/analyzer -B builddir -S /hallana-${APP_VERSION}/
+RUN cmake --build builddir -j8
+RUN cmake --install builddir
+ENV PATH="$HOME/local/analyzer/bin:$PATH"
+ENV LD_LIBRARY_PATH="$HOME/local/analyzer/lib:$LD_LIBRARY_PATH"
 
-#RUN mkdir -p ~/JLab/Software/Podd/1.7.0
-#RUN cmake3 -B build -S . -DCMAKE_INSTALL_PREFIX=~/JLab/Software/Podd/1.7.0
-##RUN cmake3 --build build -j
-#RUN cmake3 --install build
-
-#RUN export ANALYZER=~/JLab/Software/Podd/1.7.0
-#RUN export PATH=$ANALYZER/bin:$PATH
-#RUN export LD_LIBRARY_PATH=$ANALYZER/lib64:$LD_LIBRARY_PATH
-#RUN echo $PATH
-#RUN ANALYZER -h
