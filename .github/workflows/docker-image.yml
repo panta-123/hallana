@@ -35,3 +35,4 @@ jobs:
           build-args: |
             DOCKER_TAG=${{ steps.meta.outputs.tags }}
             APP_VERSION=${{ github.ref_name}}
+            REPO_NAME=${{ github.event.repository.name }}
