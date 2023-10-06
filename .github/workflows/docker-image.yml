@@ -34,3 +34,4 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             DOCKER_TAG=${{ steps.meta.outputs.tags }}
+            APP_VERSION=${{ steps.meta.outputs.tags }}

@@ -6,8 +6,7 @@ FROM centos:centos7
 #SHELL ["/bin/bash", "-c"]
 #RUN yum update -q -y
 #RUN yum group list
-ARG DOCKER_TAG
-ENV APP_VERSION=DOCKER_TAG
+ARG APP_VERSION
 
 RUN yum -y install epel-release && \
     yum -y install git && \
