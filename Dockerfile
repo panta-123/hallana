@@ -29,6 +29,13 @@ RUN mkdir -p $HOME/local/analyzer
 RUN cmake -DCMAKE_INSTALL_PREFIX=$HOME/local/analyzer -B builddir -S /${REPO_NAME}-${APP_VERSION}/
 RUN cmake --build builddir -j8
 RUN cmake --install builddir
+
 ENV PATH="~/local/analyzer/bin:$PATH"
-ENV LD_LIBRARY_PATH="~/local/analyzer/lib:$LD_LIBRARY_PATH"
+ENV LD_LIBRARY_PATH="~/local/analyzer/lib64:$LD_LIBRARY_PATH"
+
+#ENV CMAKE_INSTALL_PREFIX="~/local/analyzer"
+#ENV ANALYZER="$CMAKE_INSTALL_PREFIX"
+#ENV 
+#ENV ROOT_INCLUDE_PATH="$ANALYZER/include@${ROOT_INCLUDE_PATH:+:$ROOT_INCLUDE_PATH}"
+#ENV CMAKE_PREFIX_PATH="$ANALYZER${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
 
